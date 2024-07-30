@@ -1,0 +1,157 @@
+## `AdAzureSchema`
+
+O schema `AdAzureSchema` define a estrutura dos documentos no MongoDB para armazenar informações sobre usuários no contexto do Azure Active Directory. Ele utiliza o Mongoose para modelagem de dados e inclui plugins para paginação e agregação.
+
+### Estrutura do Schema
+
+```javascript
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
+
+const AdAzureSchema = new Schema(
+  {
+    idAzure: {
+      type: String,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    displayName: {
+      type: String,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    userPrincipalName: {
+      type: String,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    mail: {
+      type: String,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    accountEnabled: {
+      type: Boolean,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    onPremisesSamAccountName: {
+      type: String,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    license: {
+      type: Boolean,
+      required: false,
+      index: true,
+      unique: false,
+    },
+    assignedLicenses: [
+      {
+        skuId: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        disabledPlans: {
+          type: Array,
+          required: false,
+          index: false,
+          unique: false,
+        },
+      },
+    ],
+    assignedPlans: [
+      {
+        assignedDateTime: {
+          type: Date,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        capabilityStatus: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        service: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        servicePlanId: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        servicePlanName: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        },
+        appliesTo: {
+          type: String,
+          required: false,
+          index: true,
+          unique: false,
+        }
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+
+```
+## Campos
+
+- **idAzure**: Identificador único do usuário no Azure.
+- **displayName**: Nome completo exibido do usuário.
+- **userPrincipalName**: Nome de usuário principal do Azure.
+- **mail**: Endereço de e-mail do usuário.
+- **accountEnabled**: Indica se a conta do usuário está habilitada (`true` ou `false`).
+- **onPremisesSamAccountName**: Nome da conta SAM usada em um ambiente local.
+- **license**: Indica se o usuário possui uma licença (`true` ou `false`).
+- **assignedLicenses**: Lista de licenças atribuídas ao usuário, incluindo:
+  - **skuId**: Identificador do SKU da licença.
+  - **disabledPlans**: Lista de planos desativados para a licença.
+- **assignedPlans**: Lista de planos atribuídos ao usuário, incluindo:
+  - **assignedDateTime**: Data e hora em que o plano foi atribuído.
+  - **capabilityStatus**: Status das capacidades do plano.
+  - **service**: Nome do serviço associado ao plano.
+  - **servicePlanId**: Identificador do plano de serviço.
+  - **servicePlanName**: Nome do plano de serviço.
+  - **appliesTo**: Indica a quem o plano se aplica (ex.: "usuário", "grupo").
+
+## Plugins
+
+O schema utiliza os seguintes plugins:
+
+- **`mongoosePaginate`**: Para suportar a paginação dos resultados em consultas. Permite dividir grandes conjuntos de dados em páginas menores.
+- **`mongoose-aggregate-paginate-v2`**: Para suportar a paginação dos resultados de agregações. Facilita a gestão de dados agregados em páginas.
+
+## Exportação
+
+O schema e o modelo Mongoose são exportados para uso em outras partes da aplicação. O modelo **`AdAzure`** pode ser importado e utilizado para interagir com a coleção de documentos no MongoDB.
+
+```javascript
+AdAzureSchema.plugin(mongoosePaginate);
+AdAzureSchema.plugin(aggregatePaginate);
+
+const AdAzure = mongoose.model("AdAzure", AdAzureSchema);
+
+module.exports = { AdAzureSchema, AdAzure };
+```

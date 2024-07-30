@@ -1,0 +1,84 @@
+## `AdAzureLicenseDetailSchema`
+
+O schema `AdAzureLicenseDetailSchema` define a estrutura dos documentos no MongoDB para armazenar detalhes sobre licenças e seus atributos no contexto do Azure Active Directory. Ele utiliza o Mongoose para modelagem de dados e inclui um plugin para paginação.
+
+### Estrutura do Schema
+
+```javascript
+const AdAzureLicenseDetailSchema = new Schema(
+  {
+    servicePlanId: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    servicePlanName: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    provisioningStatus: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    appliesTo: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    qtdProject: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    consumidasProject: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    qtdTeamMembers: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+    consumidasTeamMembers: {
+        type: String,
+        required: false,
+        index: true,
+        unique: false,
+    },
+  },
+  { timestamps: true }
+);
+```
+## Campos
+
+- **servicePlanId**: Identificador único do plano de serviço.
+- **servicePlanName**: Nome do plano de serviço.
+- **provisioningStatus**: Status do provisionamento do plano. Pode indicar se o plano está ativo, pendente, ou outro status relevante.
+- **appliesTo**: Indica a quem o plano se aplica, como "usuário", "grupo", etc.
+- **qtdProject**: Quantidade total de licenças disponíveis para projetos.
+- **consumidasProject**: Quantidade de licenças de projetos que já foram consumidas.
+- **qtdTeamMembers**: Quantidade total de licenças disponíveis para membros da equipe.
+- **consumidasTeamMembers**: Quantidade de licenças de membros da equipe que já foram consumidas.
+
+## Plugins
+
+O schema utiliza o plugin **`mongoosePaginate`** para suportar a paginação dos resultados em consultas. Este plugin permite dividir grandes conjuntos de dados em páginas menores, facilitando a navegação e a gestão de dados.
+
+## Exportação
+
+O schema e o modelo Mongoose são exportados para uso em outras partes da aplicação. O modelo **`AdAzureLicenseDetails`** pode ser importado e utilizado para interagir com a coleção de documentos no MongoDB.
+
+`````javascript
+const AdAzureLicenseDetails = mongoose.model("AdAzureLicenseDetails", AdAzureLicenseDetailSchema);
+
+module.exports = { AdAzureLicenseDetailSchema, AdAzureLicenseDetails };
